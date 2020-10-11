@@ -1,10 +1,10 @@
 {
   "name": "@krane/common",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Common utility library for Krane",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "author": "David Castaneda",
+  "author": "biensupernice",
   "license": "Unlicense",
   "homepage": "https://krane.sh",
   "files": [

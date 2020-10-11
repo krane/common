@@ -8,7 +8,7 @@ import {
   ResponseMany,
 } from "./types";
 
-export class KraneAPI {
+export class KraneClient {
   client: AxiosInstance;
 
   constructor(endpoint: string, token?: string) {
