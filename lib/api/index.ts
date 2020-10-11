@@ -54,6 +54,12 @@ export class KraneClient {
       .then((res) => res.data);
   }
 
+  async saveDeployment(config: Config) {
+    return this.client
+      .post<Response<Config>>(`/deployments`, config)
+      .then((res) => res.data);
+  }
+
   async deleteDeployment(deploymentName: string) {
     return this.client
       .delete(`/deployments/${deploymentName}`)
