@@ -12,10 +12,6 @@ export class KraneClient {
   private client: AxiosInstance;
 
   constructor(endpoint: string, token?: string) {
-    if (!token) {
-      throw new Error("Token not provided");
-    }
-
     this.client = axios.create({
       baseURL: endpoint,
       headers: { Authorization: `Bearer ${token}` },
