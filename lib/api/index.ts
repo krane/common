@@ -53,4 +53,12 @@ export class KraneClient {
       .get<Response<Config>>(`/deployments/${deploymentName}`)
       .then((res) => res.data);
   }
+
+  async deleteDeployment(deploymentName: string) {
+    return this.client
+      .delete(`/deployments/${deploymentName}`)
+      .then((res) =>
+        res.status != 201 ? new Error("Unable to delete deployment") : null
+      );
+  }
 }
