@@ -9,7 +9,7 @@ import {
 } from "./types";
 
 export class KraneClient {
-  client: AxiosInstance;
+  private client: AxiosInstance;
 
   constructor(endpoint: string, token?: string) {
     if (!token) {
