@@ -1,11 +1,11 @@
 {
   "name": "@krane/common",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Common utility library for Krane",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "author": "biensupernice",
-  "license": "Unlicense",
+  "license": "unlicense",
   "homepage": "https://krane.sh",
   "files": [
     "/dist"

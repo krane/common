@@ -1,11 +1,11 @@
 import axios, { AxiosInstance } from "axios";
 import {
-  AuthResponse,
   Config,
   Container,
   LoginResponse,
   Response,
   ResponseMany,
+  Session,
 } from "./types";
 
 export class KraneClient {
@@ -30,7 +30,7 @@ export class KraneClient {
 
   async auth(request_id: string, token: string) {
     return this.client
-      .post<Response<AuthResponse>>("/auth", { request_id, token })
+      .post<Response<Session>>("/auth", { request_id, token })
       .then((res) => res.data);
   }
 
