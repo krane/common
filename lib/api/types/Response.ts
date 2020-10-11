@@ -1,7 +1,7 @@
 export type Response<T> = {
   success: boolean;
   code: number;
-  data: T[];
+  data: T;
 };
 
 export type ResponseMany<T> = {
