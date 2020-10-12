@@ -45,12 +45,18 @@ export class KraneClient {
   async saveDeployment(config: Config) {
     const path = "/deployments";
     const { status } = await this.client.post(path, config);
-    return status == 201 ? null : new Error("Unable to save deployment");
+
+    if (status != 201) {
+      new Error("Unable to save deployment");
+    }
   }
 
   async deleteDeployment(deploymentName: string) {
     const path = `/deployments/${deploymentName}`;
     const { status } = await this.client.delete(path);
-    return status == 201 ? null : new Error("Unable to delete deployment");
+
+    if (status != 201) {
+      new Error("Unable to delete deployment");
+    }
   }
 }
