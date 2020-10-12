@@ -1,12 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import {
-  Config,
-  Container,
-  LoginResponse,
-  Response,
-  ResponseMany,
-  Session,
-} from "./types";
+import { Config, Container, LoginResponse, Session } from "./types";
 
 export class KraneClient {
   private client: AxiosInstance;
@@ -19,48 +12,45 @@ export class KraneClient {
   }
 
   async login() {
-    return this.client
-      .get<Response<LoginResponse>>("/login")
-      .then((res) => res.data);
+    const path = "/login";
+    const { data } = await this.client.get<LoginResponse>(path);
+    return data;
   }
 
   async auth(request_id: string, token: string) {
-    return this.client
-      .post<Response<Session>>("/auth", { request_id, token })
-      .then((res) => res.data);
+    const path = "/auth";
+    const body = { request_id, token };
+    const { data } = await this.client.post<Session>(path, body);
+    return data;
   }
 
   async getDeployments() {
-    return this.client
-      .get<ResponseMany<Config>>("/deployments")
-      .then((res) => res.data);
+    const path = "/deployments";
+    const { data } = await this.client.get<Config[]>(path);
+    return data;
   }
 
   async getContainers(deploymentName: string) {
-    return this.client
-      .get<ResponseMany<Container[]>>(
-        `/deployments/${deploymentName}/containers`
-      )
-      .then((res) => res.data);
+    const path = `/deployments/${deploymentName}/containers`;
+    const { data } = await this.client.get<Container[]>(path);
+    return data;
   }
 
   async getDeployment(deploymentName: string) {
-    return this.client
-      .get<Response<Config>>(`/deployments/${deploymentName}`)
-      .then((res) => res.data);
+    const path = `/deployments/${deploymentName}`;
+    const { data } = await this.client.get<Config>(path);
+    return data;
   }
 
   async saveDeployment(config: Config) {
-    return this.client
-      .post<Response<Config>>(`/deployments`, config)
-      .then((res) => res.data);
+    const path = "/deployments";
+    const { status } = await this.client.post(path, config);
+    return status == 201 ? null : new Error("Unable to save deployment");
   }
 
   async deleteDeployment(deploymentName: string) {
-    return this.client
-      .delete(`/deployments/${deploymentName}`)
-      .then((res) =>
-        res.status != 201 ? new Error("Unable to delete deployment") : null
-      );
+    const path = `/deployments/${deploymentName}`;
+    const { status } = await this.client.delete(path);
+    return status == 201 ? null : new Error("Unable to delete deployment");
   }
 }
