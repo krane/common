@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import { Config, Container, LoginResponse, Session } from "./types";
+import { KraneApiException } from "./exceptions";
 
 export class KraneClient {
   private client: AxiosInstance;
@@ -47,7 +48,7 @@ export class KraneClient {
     const { status } = await this.client.post(path, config);
 
     if (status != 201) {
-      new Error("Unable to save deployment");
+      throw new KraneApiException("Unable to save deployment");
     }
   }
 
@@ -56,7 +57,7 @@ export class KraneClient {
     const { status } = await this.client.delete(path);
 
     if (status != 201) {
-      new Error("Unable to delete deployment");
+      throw new KraneApiException("Unable to delete deployment");
     }
   }
 }
