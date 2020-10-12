@@ -1,3 +1,4 @@
+import { Secret } from "./types/Secret";
 import axios, { AxiosInstance } from "axios";
 import { Config, Container, LoginResponse, Session } from "./types";
 import { KraneApiException } from "./exceptions";
@@ -59,5 +60,17 @@ export class KraneClient {
     if (status != 201) {
       throw new KraneApiException("Unable to delete deployment");
     }
+  }
+
+  async addSecret(deploymentName: string, key: string, value: string) {
+    const path = `/secrets/${deploymentName}`;
+    const { data } = await this.client.post<Secret>(path, { key, value });
+    return data;
+  }
+
+  async getSecrets(deploymentName: string) {
+    const path = `/secrets/${deploymentName}`;
+    const { data } = await this.client.get<Secret[]>(path);
+    return data;
   }
 }

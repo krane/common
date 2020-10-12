@@ -1,3 +1,5 @@
+import { Secret } from "./Secret";
+
 export type Container = {
   id: string;
   name: string;
@@ -24,11 +26,4 @@ export type Port = {
 export type Volume = {
   host_volume: string;
   containeR_volume: string;
-};
-
-export type Secret = {
-  namespace: string;
-  key: string;
-  value: string;
-  alias: string;
 };
