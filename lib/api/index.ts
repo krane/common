@@ -68,6 +68,15 @@ export class KraneClient {
     return data;
   }
 
+  async deleteSecret(deploymentName: string, key: string) {
+    const path = `/secrets/${deploymentName}/${key}`;
+    const { status } = await this.client.delete(path);
+
+    if (status != 200) {
+      throw new KraneApiException("Unable to delete secret");
+    }
+  }
+
   async getSecrets(deploymentName: string) {
     const path = `/secrets/${deploymentName}`;
     const { data } = await this.client.get<Secret[]>(path);
