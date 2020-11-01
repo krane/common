@@ -8,4 +8,5 @@ export type Config = {
   secrets?: { [key: string]: string };
   ports?: { [key: string]: string };
   volumes?: { [key: string]: string };
+  command?: string[];
 };
