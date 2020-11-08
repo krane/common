@@ -1,6 +1,6 @@
 {
   "name": "@krane/common",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Common utility library for Krane",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
