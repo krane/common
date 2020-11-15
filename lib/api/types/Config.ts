@@ -9,4 +9,5 @@ export type Config = {
   ports?: { [key: string]: string };
   volumes?: { [key: string]: string };
   command?: string[];
+  scale?: number;
 };

@@ -44,12 +44,11 @@ export class KraneClient {
     return data;
   }
 
-  async saveDeployment(config: Config) {
+  async applyDeployment(config: Config) {
     const path = "/deployments";
     const { status } = await this.client.post(path, config);
-
     if (status != 202) {
-      throw new KraneApiException("Unable to save deployment");
+      throw new KraneApiException("Unable to apply deployment");
     }
   }
 

@@ -1,6 +1,6 @@
 ![Common](https://res.cloudinary.com/biensupernice/image/upload/v1602471786/Marketing_-_Krane_Common_m2jrvu.png)
 
-![publish-npm](https://github.com/krane/common/workflows/publish-npm/badge.svg?branch=master&event=push)
+[![npm version](https://badge.fury.io/js/%40krane%2Fcommon.svg)](https://badge.fury.io/js/%40krane%2Fcommon)
 
 A common set of utilities written in Typescript to work with [Krane](https://krane.sh)
 
