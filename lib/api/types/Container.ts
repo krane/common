@@ -19,7 +19,7 @@ export declare type Port = {
   ip: string;
   type: string;
   host_port: string;
-  containeR_port: string;
+  container_port: string;
 };
 export declare type Volume = {
   host_volume: string;
