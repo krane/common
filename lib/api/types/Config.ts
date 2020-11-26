@@ -10,4 +10,5 @@ export type Config = {
   volumes?: { [key: string]: string };
   command?: string[];
   scale?: number;
+  secured?: boolean;
 };
