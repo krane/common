@@ -6,7 +6,7 @@ export type Config = {
   alias?: string[];
   env?: { [key: string]: string };
   secrets?: { [key: string]: string };
-  ports?: string[];
+  ports?: { [key: string]: string };
   volumes?: { [key: string]: string };
   command?: string[];
   scale?: number;
