@@ -1,20 +1,20 @@
-import { Secret } from "./Secret";
-
 export declare type Container = {
   id: string;
-  name: string;
   namespace: string;
+  name: string;
+  network_id: string;
   image: string;
   image_id: string;
   created_at: number;
-  status: string; // ex: Up 17 hours
-  state: ContainerState;
   labels: { [key: string]: string };
-  env: { [key: string]: string };
+  state: ContainerState;
+  status: string; // ex: Up 17 hours
   ports: Port[];
   volumes: Volume[];
-  secrets: Secret[];
+  command: string[];
+  entrypoint: string[];
 };
+
 export declare type Port = {
   ip: string;
   type: string;
@@ -26,7 +26,16 @@ export declare type Volume = {
   container_volume: string;
 };
 
-export declare enum ContainerState {
-  Running = "running",
-  Unknown = "unknown",
-}
+export declare type ContainerState = {
+  status: string;
+  running: string;
+  paused: boolean;
+  restarting: boolean;
+  oom_killed: boolean;
+  dead: boolean;
+  pid: number;
+  exit_code: number;
+  error: string;
+  started: string;
+  finished_at: string;
+};
