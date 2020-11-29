@@ -8,7 +8,6 @@ export declare type Container = {
   created_at: number;
   labels: { [key: string]: string };
   state: ContainerState;
-  status: string; // ex: Up 17 hours
   ports: Port[];
   volumes: Volume[];
   command: string[];
