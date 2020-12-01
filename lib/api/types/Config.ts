@@ -4,6 +4,7 @@ export type Config = {
   image: string;
   tag: string;
   alias?: string[];
+  labels?: { [key: string]: string };
   env?: { [key: string]: string };
   secrets?: { [key: string]: string };
   ports?: { [key: string]: string };
