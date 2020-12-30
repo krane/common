@@ -1,6 +1,6 @@
 export declare type Container = {
   id: string;
-  namespace: string;
+  deployment: string;
   name: string;
   network_id: string;
   image: string;

@@ -8,9 +8,11 @@ export type Config = {
   env?: { [key: string]: string };
   secrets?: { [key: string]: string };
   ports?: { [key: string]: string };
+  target_port?: string;
   volumes?: { [key: string]: string };
   command?: string;
   entrypoint?: string;
   scale?: number;
   secured?: boolean;
+  internal?: boolean;
 };

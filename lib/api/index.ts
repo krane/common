@@ -26,34 +26,29 @@ export class KraneClient {
     return data;
   }
 
+  async getDeployment(deployment: string) {
+    const path = `/deployments/${deployment}`;
+    const { data } = await this.client.get<Config>(path);
+    return data;
+  }
+
   async getDeployments() {
     const path = "/deployments";
     const { data } = await this.client.get<Config[]>(path);
     return data;
   }
 
-  async getContainers(deploymentName: string) {
-    const path = `/deployments/${deploymentName}/containers`;
-    const { data } = await this.client.get<Container[]>(path);
-    return data;
-  }
-
-  async getDeployment(deploymentName: string) {
-    const path = `/deployments/${deploymentName}`;
-    const { data } = await this.client.get<Config>(path);
-    return data;
-  }
-
-  async applyDeployment(config: Config) {
+  async saveDeployment(config: Config) {
     const path = "/deployments";
-    const { status } = await this.client.post(path, config);
-    if (status != 202) {
-      throw new KraneApiException("Unable to apply deployment");
+    const { status, data } = await this.client.post<Config>(path, config);
+    if (status != 200) {
+      throw new KraneApiException("Unable to save deployment");
     }
+    return data;
   }
 
-  async deleteDeployment(deploymentName: string) {
-    const path = `/deployments/${deploymentName}`;
+  async deleteDeployment(deployment: string) {
+    const path = `/deployments/${deployment}`;
     const { status } = await this.client.delete(path);
 
     if (status != 202) {
@@ -61,24 +56,30 @@ export class KraneClient {
     }
   }
 
-  async addSecret(deploymentName: string, key: string, value: string) {
-    const path = `/secrets/${deploymentName}`;
+  async getDeploymentContainers(deployment: string) {
+    const path = `/deployments/${deployment}/containers`;
+    const { data } = await this.client.get<Container[]>(path);
+    return data;
+  }
+
+  async getDeploymentSecrets(deployment: string) {
+    const path = `/secrets/${deployment}`;
+    const { data } = await this.client.get<Secret[]>(path);
+    return data;
+  }
+
+  async addDeploymentSecret(deployment: string, key: string, value: string) {
+    const path = `/secrets/${deployment}`;
     const { data } = await this.client.post<Secret>(path, { key, value });
     return data;
   }
 
-  async deleteSecret(deploymentName: string, key: string) {
-    const path = `/secrets/${deploymentName}/${key}`;
+  async deleteDeploymentSecret(deployment: string, key: string) {
+    const path = `/secrets/${deployment}/${key}`;
     const { status } = await this.client.delete(path);
 
     if (status != 200) {
       throw new KraneApiException("Unable to delete secret");
     }
-  }
-
-  async getSecrets(deploymentName: string) {
-    const path = `/secrets/${deploymentName}`;
-    const { data } = await this.client.get<Secret[]>(path);
-    return data;
   }
 }
