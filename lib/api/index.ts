@@ -41,9 +41,11 @@ export class KraneClient {
   async saveDeployment(config: Config) {
     const path = "/deployments";
     const { status, data } = await this.client.post<Config>(path, config);
+
     if (status != 200) {
       throw new KraneApiException("Unable to save deployment");
     }
+
     return data;
   }
 
@@ -53,6 +55,15 @@ export class KraneClient {
 
     if (status != 202) {
       throw new KraneApiException("Unable to delete deployment");
+    }
+  }
+
+  async runDeployment(deployment: string) {
+    const path = `/deployments/${deployment}`;
+    const { status } = await this.client.post(path);
+
+    if (status != 202) {
+      throw new KraneApiException("Unable to run deployment");
     }
   }
 
