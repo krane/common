@@ -1,7 +1,7 @@
-import { Secret } from "./types/Secret";
 import axios, { AxiosInstance } from "axios";
-import { Config, Container, LoginResponse, Session } from "./types";
+
 import { KraneApiException } from "./exceptions";
+import { Config, Container, LoginResponse, Session, Secret } from "./types";
 
 export class KraneClient {
   private client: AxiosInstance;

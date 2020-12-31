@@ -13,6 +13,6 @@ export type Config = {
   command?: string;
   entrypoint?: string;
   scale?: number;
-  secured?: boolean;
+  secure?: boolean;
   internal?: boolean;
 };
