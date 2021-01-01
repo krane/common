@@ -1,6 +1,6 @@
 export type Job = {
   id: string;
-  namespace: string;
+  deployment: string;
   type: string;
   status: JobStatus;
   state: JobState;
@@ -12,10 +12,15 @@ export type Job = {
 export type JobStatus = {
   execution_count: number;
   failure_count: number;
-  failures: number;
+  failures: JobError[];
 };
 
 export enum JobState {
   STARTED,
   COMPLETED,
 }
+
+export type JobError = {
+  execution: number;
+  message: string;
+};

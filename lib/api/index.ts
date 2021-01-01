@@ -67,6 +67,33 @@ export class KraneClient {
     }
   }
 
+  async startDeployment(deployment: string) {
+    const path = `/deployments/${deployment}/containers/start`;
+    const { status } = await this.client.post(path);
+
+    if (status != 202) {
+      throw new KraneApiException("Unable to start deployment");
+    }
+  }
+
+  async stopDeployment(deployment: string) {
+    const path = `/deployments/${deployment}/containers/stop`;
+    const { status } = await this.client.post(path);
+
+    if (status != 202) {
+      throw new KraneApiException("Unable to stop deployment");
+    }
+  }
+
+  async restartDeployment(deployment: string) {
+    const path = `/deployments/${deployment}/containers/restart`;
+    const { status } = await this.client.post(path);
+
+    if (status != 202) {
+      throw new KraneApiException("Unable to restart deployment");
+    }
+  }
+
   async getDeploymentContainers(deployment: string) {
     const path = `/deployments/${deployment}/containers`;
     const { data } = await this.client.get<Container[]>(path);
