@@ -4,8 +4,7 @@
   "description": "Common utility library for Krane",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "author": "biensupernice",
-  "license": "unlicense",
+  "author": "Krane",
   "homepage": "https://krane.sh",
   "files": [
     "/dist"
