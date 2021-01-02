@@ -127,7 +127,8 @@ export class KraneClient {
   }
 
   streamContainerLogs(container: string) {
-    return io(`${this.endpoint}/containers/${container}/logs`, {
+    const wsEndpoint = this.endpoint.replace(/(http)(s)?\:\/\//, "ws$2://");
+    return io(`${wsEndpoint}/containers/${container}/logs`, {
       query: { Authorization: `Bearer ${this.token}` },
     });
   }
