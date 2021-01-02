@@ -1,12 +1,17 @@
 import axios, { AxiosInstance } from "axios";
+import { io } from "socket.io-client";
 
 import { KraneApiException } from "./exceptions";
 import { Config, Container, LoginResponse, Session, Secret } from "./types";
 
 export class KraneClient {
   private client: AxiosInstance;
+  private endpoint: string;
+  private token?: string;
 
   constructor(endpoint: string, token?: string) {
+    this.endpoint = endpoint;
+    this.token = token;
     this.client = axios.create({
       baseURL: endpoint,
       headers: { Authorization: `Bearer ${token}` },
@@ -119,5 +124,11 @@ export class KraneClient {
     if (status != 200) {
       throw new KraneApiException("Unable to delete secret");
     }
+  }
+
+  async streamContainerLogs(container: string) {
+    return io(`${this.endpoint}/containers/${container}/logs`, {
+      query: { Authorization: `Bearer ${this.token}` },
+    });
   }
 }

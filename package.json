@@ -1,6 +1,6 @@
 {
   "name": "@krane/common",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "description": "Common utility library for Krane",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "axios": "^0.20.0",
+    "socket.io-client": "^3.0.4",
     "typescript": "^4.0.3"
   }
 }
