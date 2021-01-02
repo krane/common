@@ -126,7 +126,7 @@ export class KraneClient {
     }
   }
 
-  async streamContainerLogs(container: string) {
+  streamContainerLogs(container: string) {
     return io(`${this.endpoint}/containers/${container}/logs`, {
       query: { Authorization: `Bearer ${this.token}` },
     });
