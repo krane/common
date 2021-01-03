@@ -1,7 +1,14 @@
 import axios, { AxiosInstance } from "axios";
 
 import { KraneApiException } from "./exceptions";
-import { Config, Container, LoginResponse, Session, Secret } from "./types";
+import {
+  Config,
+  Container,
+  LoginResponse,
+  Session,
+  Secret,
+  Job,
+} from "./types";
 
 const WebSocket = require("ws");
 
@@ -44,13 +51,11 @@ export class KraneClient {
 
   async saveDeployment(config: Config) {
     const path = "/deployments";
-    const { status, data } = await this.client.post<Config>(path, config);
+    const { status } = await this.client.post<Config>(path, config);
 
     if (status != 200) {
       throw new KraneApiException("Unable to save deployment");
     }
-
-    return data;
   }
 
   async deleteDeployment(deployment: string) {
@@ -128,5 +133,17 @@ export class KraneClient {
   streamContainerLogs(container: string) {
     const wsEndpoint = this.endpoint.replace(/(http)(s)?\:\/\//, "ws$2://");
     return new WebSocket(`${wsEndpoint}/containers/${container}/logs`);
+  }
+
+  async getJobs(deployment: string) {
+    const path = `/jobs/${deployment}`;
+    const { data } = await this.client.get<Job[]>(path);
+    return data;
+  }
+
+  async getJobById(deployment: string, jobId: string) {
+    const path = `/jobs/${deployment}/${jobId}`;
+    const { data } = await this.client.get<Job>(path);
+    return data;
   }
 }
