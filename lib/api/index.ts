@@ -15,9 +15,11 @@ const WebSocket = require("ws");
 export class KraneClient {
   private client: AxiosInstance;
   private endpoint: string;
+  private token?: string;
 
   constructor(endpoint: string, token?: string) {
     this.endpoint = endpoint;
+    this.token = token;
     this.client = axios.create({
       baseURL: endpoint,
       headers: { Authorization: `Bearer ${token}` },
@@ -132,7 +134,9 @@ export class KraneClient {
 
   streamContainerLogs(container: string) {
     const wsEndpoint = this.endpoint.replace(/(http)(s)?\:\/\//, "ws$2://");
-    return new WebSocket(`${wsEndpoint}/containers/${container}/logs`);
+    return new WebSocket(`${wsEndpoint}/ws/containers/${container}/logs`, {
+      headers: { Authorization: `Bearer ${this.token}` },
+    });
   }
 
   async getJobs(deployment: string) {
