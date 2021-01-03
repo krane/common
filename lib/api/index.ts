@@ -1,17 +1,16 @@
 import axios, { AxiosInstance } from "axios";
-import { io } from "socket.io-client";
 
 import { KraneApiException } from "./exceptions";
 import { Config, Container, LoginResponse, Session, Secret } from "./types";
 
+const WebSocket = require("ws");
+
 export class KraneClient {
   private client: AxiosInstance;
   private endpoint: string;
-  private token?: string;
 
   constructor(endpoint: string, token?: string) {
     this.endpoint = endpoint;
-    this.token = token;
     this.client = axios.create({
       baseURL: endpoint,
       headers: { Authorization: `Bearer ${token}` },
@@ -128,8 +127,6 @@ export class KraneClient {
 
   streamContainerLogs(container: string) {
     const wsEndpoint = this.endpoint.replace(/(http)(s)?\:\/\//, "ws$2://");
-    return io(`${wsEndpoint}/containers/${container}/logs`, {
-      query: { Authorization: `Bearer ${this.token}` },
-    });
+    return new WebSocket(`${wsEndpoint}/containers/${container}/logs`);
   }
 }
