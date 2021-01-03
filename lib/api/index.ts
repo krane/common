@@ -132,7 +132,8 @@ export class KraneClient {
     }
   }
 
-  streamContainerLogs(container: string) {
+  // Websocket events ref: https://github.com/websockets/ws/blob/HEAD/doc/ws.md#event-close-1
+  streamContainerLogs(container: string): WebSocket {
     const wsEndpoint = this.endpoint.replace(/(http)(s)?\:\/\//, "ws$2://");
     return new WebSocket(`${wsEndpoint}/ws/containers/${container}/logs`, {
       headers: { Authorization: `Bearer ${this.token}` },
