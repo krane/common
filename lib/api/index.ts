@@ -105,39 +105,31 @@ export class KraneClient {
     }
   }
 
-  async getDeploymentContainers(deployment: string) {
+  async getContainers(deployment: string) {
     const path = `/deployments/${deployment}/containers`;
     const { data } = await this.client.get<Container[]>(path);
     return data;
   }
 
-  async getDeploymentSecrets(deployment: string) {
+  async getSecrets(deployment: string) {
     const path = `/secrets/${deployment}`;
     const { data } = await this.client.get<Secret[]>(path);
     return data;
   }
 
-  async addDeploymentSecret(deployment: string, key: string, value: string) {
+  async addSecret(deployment: string, key: string, value: string) {
     const path = `/secrets/${deployment}`;
     const { data } = await this.client.post<Secret>(path, { key, value });
     return data;
   }
 
-  async deleteDeploymentSecret(deployment: string, key: string) {
+  async deleteSecret(deployment: string, key: string) {
     const path = `/secrets/${deployment}/${key}`;
     const { status } = await this.client.delete(path);
 
     if (status != 200) {
       throw new KraneApiException("Unable to delete secret");
     }
-  }
-
-  // Websocket events ref: https://github.com/websockets/ws/blob/HEAD/doc/ws.md#event-close-1
-  streamContainerLogs(container: string): WebSocket {
-    const wsEndpoint = this.endpoint.replace(/(http)(s)?\:\/\//, "ws$2://");
-    return new WebSocket(`${wsEndpoint}/ws/containers/${container}/logs`, {
-      headers: { Authorization: `Bearer ${this.token}` },
-    });
   }
 
   async getJobs(deployment: string) {
@@ -150,5 +142,19 @@ export class KraneClient {
     const path = `/jobs/${deployment}/${jobId}`;
     const { data } = await this.client.get<Job>(path);
     return data;
+  }
+
+  readContainerLogs(container: string): WebSocket {
+    const wsEndpoint = this.endpoint.replace(/(http)(s)?\:\/\//, "ws$2://");
+    return new WebSocket(`${wsEndpoint}/ws/containers/${container}/logs`, {
+      headers: { Authorization: `Bearer ${this.token}` },
+    });
+  }
+
+  subscribeToDeploymentEvents(deployment: string): WebSocket {
+    const wsEndpoint = this.endpoint.replace(/(http)(s)?\:\/\//, "ws$2://");
+    return new WebSocket(`${wsEndpoint}/ws/deployments/${deployment}/events`, {
+      headers: { Authorization: `Bearer ${this.token}` },
+    });
   }
 }
