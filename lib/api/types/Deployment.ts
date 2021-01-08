@@ -2,7 +2,7 @@ import { Config, Container, Job } from "./";
 
 type DeploymentProps = {
   containers: Container[];
-  recent_activity: Job[];
+  jobs: Job[];
 };
 
 export type Deployment = DeploymentProps & Config;
