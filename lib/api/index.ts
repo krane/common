@@ -4,6 +4,7 @@ import { KraneApiException } from "./exceptions";
 import {
   Config,
   Container,
+  Deployment,
   LoginResponse,
   Session,
   Secret,
@@ -41,13 +42,13 @@ export class KraneClient {
 
   async getDeployment(deployment: string) {
     const path = `/deployments/${deployment}`;
-    const { data } = await this.client.get<Config>(path);
+    const { data } = await this.client.get<Deployment>(path);
     return data;
   }
 
   async getDeployments() {
     const path = "/deployments";
-    const { data } = await this.client.get<Config[]>(path);
+    const { data } = await this.client.get<Deployment[]>(path);
     return data;
   }
 
