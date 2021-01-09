@@ -1,8 +1,7 @@
 import { Config, Container, Job } from "./";
 
-type DeploymentProps = {
+export type Deployment = {
+  config: Config;
   containers: Container[];
   jobs: Job[];
 };
-
-export type Deployment = DeploymentProps & Config;
