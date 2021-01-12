@@ -15,4 +15,5 @@ export type Config = {
   scale?: number;
   secure?: boolean;
   internal?: boolean;
+  rate_limit?: number;
 };
