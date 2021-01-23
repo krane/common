@@ -40,6 +40,18 @@ export class KraneClient {
     return data;
   }
 
+  async getSessions() {
+    const path = "/sessions";
+    const { data } = await this.client.get<Session[]>(path);
+    return data;
+  }
+
+  async createSession(user: string) {
+    const path = `/sessions?user=${user}`;
+    const { data } = await this.client.post<Session>(path);
+    return data;
+  }
+
   async getDeployment(deployment: string) {
     const path = `/deployments/${deployment}`;
     const { data } = await this.client.get<Deployment>(path);
