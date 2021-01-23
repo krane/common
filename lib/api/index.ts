@@ -52,6 +52,15 @@ export class KraneClient {
     return data;
   }
 
+  async deleteSession(sessionId: string) {
+    const path = `/sessions/${sessionId}`;
+    const { status } = await this.client.delete(path);
+
+    if (status != 200) {
+      throw new KraneApiException("Unable to delete session");
+    }
+  }
+
   async getDeployment(deployment: string) {
     const path = `/deployments/${deployment}`;
     const { data } = await this.client.get<Deployment>(path);
