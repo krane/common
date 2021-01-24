@@ -27,7 +27,7 @@ export declare type Volume = {
 
 export declare type ContainerState = {
   status: string;
-  running: string;
+  running: boolean;
   paused: boolean;
   restarting: boolean;
   oom_killed: boolean;
@@ -35,6 +35,6 @@ export declare type ContainerState = {
   pid: number;
   exit_code: number;
   error: string;
-  started: string;
+  started_at: string;
   finished_at: string;
 };
