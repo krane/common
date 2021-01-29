@@ -2,10 +2,11 @@
 
 [![npm version](https://badge.fury.io/js/%40krane%2Fcommon.svg)](https://badge.fury.io/js/%40krane%2Fcommon)
 
-A common set of utilities written in Typescript to work with [Krane](https://krane.sh)
+A common set of utilities written in Typescript to interface with [Krane](https://krane.sh)
 
 ## Install
 
 ```
 npm i @krane/common
 ```
+
