@@ -173,6 +173,13 @@ export class KraneClient {
     });
   }
 
+  subscribeToDeploymentLogs(deployment: string): WebSocket {
+    const wsEndpoint = this.endpoint.replace(/(http)(s)?\:\/\//, "ws$2://");
+    return new WebSocket(`${wsEndpoint}/ws/deployments/${deployment}/logs`, {
+      headers: { Authorization: `Bearer ${this.token}` },
+    });
+  }
+
   subscribeToDeploymentEvents(deployment: string): WebSocket {
     const wsEndpoint = this.endpoint.replace(/(http)(s)?\:\/\//, "ws$2://");
     return new WebSocket(`${wsEndpoint}/ws/deployments/${deployment}/events`, {

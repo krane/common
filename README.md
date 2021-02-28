@@ -10,3 +10,14 @@ A common set of utilities written in Typescript to interface with [Krane](https:
 npm i @krane/common
 ```
 
+## Examples
+
+```typescript
+import { KraneClient } from "@krane/common";
+
+const client = new KraneClient("http://example.com", "Bearer ...");
+
+const deployments = client.getDeployments();
+
+deployments.map((deployment) => await client.stopDeployment(deployment.name));
+```
