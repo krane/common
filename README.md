@@ -15,9 +15,14 @@ npm i @krane/common
 ```typescript
 import { KraneClient } from "@krane/common";
 
+// Create an authenticated client to interface with the Krane API
 const client = new KraneClient("http://example.com", "Bearer ...");
 
+// Get all deployments
 const deployments = client.getDeployments();
 
-deployments.map((deployment) => await client.stopDeployment(deployment.name));
+// Restart all deployments
+for (const deployment of deployments) {
+  await client.restartDeployment(deployment.name)
+}
 ```
