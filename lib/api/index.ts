@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from "axios";
+import { EDEADLK } from "constants";
 
 import { KraneApiException } from "./exceptions";
 import {
@@ -170,8 +171,11 @@ export class KraneClient {
 
   subscribeToDeploymentEvents(
     deployment: string,
-    eventHandlers: {
-      [key in DeploymentEventType]?: (event: DeploymentEvent) => void;
+    handlerFn: {
+      [key in DeploymentEventType]?: (
+        event: DeploymentEvent,
+        stopListening: () => void
+      ) => void;
     }
   ) {
     const wsEndpoint = this.endpoint.replace(/(http)(s)?\:\/\//, "ws$2://");
@@ -186,35 +190,36 @@ export class KraneClient {
       const data = JSON.parse(event.data) as DeploymentEvent;
       switch (data.type) {
         case DeploymentEventType.DEPLOYMENT_CONTAINER_CREATE:
-          eventHandlers.DEPLOYMENT_CONTAINER_CREATE &&
-            eventHandlers.DEPLOYMENT_CONTAINER_CREATE(data);
+          handlerFn.DEPLOYMENT_CONTAINER_CREATE &&
+            handlerFn.DEPLOYMENT_CONTAINER_CREATE(data, ws.close);
           break;
         case DeploymentEventType.DEPLOYMENT_CONTAINER_START:
-          eventHandlers.DEPLOYMENT_CONTAINER_START &&
-            eventHandlers.DEPLOYMENT_CONTAINER_START(data);
+          handlerFn.DEPLOYMENT_CONTAINER_START &&
+            handlerFn.DEPLOYMENT_CONTAINER_START(data, ws.close);
           break;
         case DeploymentEventType.DEPLOYMENT_CLEANUP:
-          eventHandlers.DEPLOYMENT_CLEANUP &&
-            eventHandlers.DEPLOYMENT_CLEANUP(data);
+          handlerFn.DEPLOYMENT_CLEANUP &&
+            handlerFn.DEPLOYMENT_CLEANUP(data, ws.close);
           break;
         case DeploymentEventType.DEPLOYMENT_DONE:
-          eventHandlers.DEPLOYMENT_DONE && eventHandlers.DEPLOYMENT_DONE(data);
+          handlerFn.DEPLOYMENT_DONE &&
+            handlerFn.DEPLOYMENT_DONE(data, ws.close);
           break;
         case DeploymentEventType.DEPLOYMENT_HEALTHCHECK:
-          eventHandlers.DEPLOYMENT_HEALTHCHECK &&
-            eventHandlers.DEPLOYMENT_HEALTHCHECK(data);
+          handlerFn.DEPLOYMENT_HEALTHCHECK &&
+            handlerFn.DEPLOYMENT_HEALTHCHECK(data, ws.close);
           break;
         case DeploymentEventType.DEPLOYMENT_SETUP:
-          eventHandlers.DEPLOYMENT_SETUP &&
-            eventHandlers.DEPLOYMENT_SETUP(data);
+          handlerFn.DEPLOYMENT_SETUP &&
+            handlerFn.DEPLOYMENT_SETUP(data, ws.close);
           break;
         case DeploymentEventType.DEPLOYMENT_PULL_IMAGE:
-          eventHandlers.DEPLOYMENT_PULL_IMAGE &&
-            eventHandlers.DEPLOYMENT_PULL_IMAGE(data);
+          handlerFn.DEPLOYMENT_PULL_IMAGE &&
+            handlerFn.DEPLOYMENT_PULL_IMAGE(data, ws.close);
           break;
         case DeploymentEventType.DEPLOYMENT_ERROR:
-          eventHandlers.DEPLOYMENT_ERROR &&
-            eventHandlers.DEPLOYMENT_ERROR(data);
+          handlerFn.DEPLOYMENT_ERROR &&
+            handlerFn.DEPLOYMENT_ERROR(data, ws.close);
           break;
       }
     };
