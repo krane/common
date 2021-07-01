@@ -1,6 +1,6 @@
 {
   "name": "@krane/common",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "description": "Common utility library for Krane",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "axios": ">=0.21.1",
-    "ws": "^7.4.2"
+    "ws": "^7.5.0"
   },
   "devDependencies": {
     "@types/node": "^14.14.19",
