@@ -186,7 +186,10 @@ export class KraneClient {
       }
     );
 
-    ws.onerror = (event: Event) => onError && onError(event);
+    ws.onerror = (event: Event) => {
+      onError && onError(event);
+      ws.close();
+    };
 
     ws.onmessage = (event: MessageEvent) => {
       const data = JSON.parse(event.data) as DeploymentEvent;
