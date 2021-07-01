@@ -9,7 +9,6 @@ import {
   Session,
   Secret,
   Job,
-  DeploymentEventDispatcher,
   DeploymentEvent,
   DeploymentEventType,
 } from "./types";
@@ -169,7 +168,12 @@ export class KraneClient {
     return data;
   }
 
-  subscribeToDeploymentEvents(deployment: string): DeploymentEventDispatcher {
+  subscribeToDeploymentEvents(
+    deployment: string,
+    eventHandlers: {
+      [key in DeploymentEventType]?: (event: DeploymentEvent) => void;
+    }
+  ) {
     const wsEndpoint = this.endpoint.replace(/(http)(s)?\:\/\//, "ws$2://");
     const ws: WebSocket = new WebSocket(
       `${wsEndpoint}/ws/deployments/${deployment}/events`,
@@ -178,48 +182,42 @@ export class KraneClient {
       }
     );
 
-    const dispatcher: DeploymentEventDispatcher = {
-      onContainerCreate: (_event: DeploymentEvent) => {},
-      onContainerStart: (_event: DeploymentEvent) => {},
-      onCleanup: (_event: DeploymentEvent) => {},
-      onDone: (_event: DeploymentEvent) => {},
-      onHealtcheck: (_event: DeploymentEvent) => {},
-      onSetup: (_event: DeploymentEvent) => {},
-      onPullImage: (_event: DeploymentEvent) => {},
-      onError: (_event: DeploymentEvent) => {},
-      close: () => ws.close(),
-    };
-
     ws.onmessage = (event: MessageEvent<DeploymentEvent>) => {
       switch (event.data.type) {
         case DeploymentEventType.DEPLOYMENT_CONTAINER_CREATE:
-          dispatcher.onContainerCreate(event.data);
+          eventHandlers.DEPLOYMENT_CONTAINER_CREATE &&
+            eventHandlers.DEPLOYMENT_CONTAINER_CREATE(event.data);
           break;
         case DeploymentEventType.DEPLOYMENT_CONTAINER_START:
-          dispatcher.onContainerStart(event.data);
+          eventHandlers.DEPLOYMENT_CONTAINER_START &&
+            eventHandlers.DEPLOYMENT_CONTAINER_START(event.data);
           break;
         case DeploymentEventType.DEPLOYMENT_CLEANUP:
-          dispatcher.onCleanup(event.data);
+          eventHandlers.DEPLOYMENT_CLEANUP &&
+            eventHandlers.DEPLOYMENT_CLEANUP(event.data);
           break;
         case DeploymentEventType.DEPLOYMENT_DONE:
-          dispatcher.onDone(event.data);
+          eventHandlers.DEPLOYMENT_DONE &&
+            eventHandlers.DEPLOYMENT_DONE(event.data);
           break;
         case DeploymentEventType.DEPLOYMENT_HEALTHCHECK:
-          dispatcher.onHealtcheck(event.data);
+          eventHandlers.DEPLOYMENT_HEALTHCHECK &&
+            eventHandlers.DEPLOYMENT_HEALTHCHECK(event.data);
           break;
         case DeploymentEventType.DEPLOYMENT_SETUP:
-          dispatcher.onSetup(event.data);
+          eventHandlers.DEPLOYMENT_SETUP &&
+            eventHandlers.DEPLOYMENT_SETUP(event.data);
           break;
         case DeploymentEventType.DEPLOYMENT_PULL_IMAGE:
-          dispatcher.onPullImage(event.data);
+          eventHandlers.DEPLOYMENT_PULL_IMAGE &&
+            eventHandlers.DEPLOYMENT_PULL_IMAGE(event.data);
           break;
         case DeploymentEventType.DEPLOYMENT_ERROR:
-          dispatcher.onError(event.data);
+          eventHandlers.DEPLOYMENT_ERROR &&
+            eventHandlers.DEPLOYMENT_ERROR(event.data);
           break;
       }
     };
-
-    return dispatcher;
   }
 
   subscribeToDeploymentLogs(deployment: string): WebSocket {
