@@ -190,35 +190,35 @@ export class KraneClient {
       switch (data.type) {
         case DeploymentEventType.DEPLOYMENT_CONTAINER_CREATE:
           handlerFn.DEPLOYMENT_CONTAINER_CREATE &&
-            handlerFn.DEPLOYMENT_CONTAINER_CREATE(data, ws.close);
+            handlerFn.DEPLOYMENT_CONTAINER_CREATE(data, () => ws.close());
           break;
         case DeploymentEventType.DEPLOYMENT_CONTAINER_START:
           handlerFn.DEPLOYMENT_CONTAINER_START &&
-            handlerFn.DEPLOYMENT_CONTAINER_START(data, ws.close);
+            handlerFn.DEPLOYMENT_CONTAINER_START(data, () => ws.close());
           break;
         case DeploymentEventType.DEPLOYMENT_CLEANUP:
           handlerFn.DEPLOYMENT_CLEANUP &&
-            handlerFn.DEPLOYMENT_CLEANUP(data, ws.close);
+            handlerFn.DEPLOYMENT_CLEANUP(data, () => ws.close());
           break;
         case DeploymentEventType.DEPLOYMENT_DONE:
           handlerFn.DEPLOYMENT_DONE &&
-            handlerFn.DEPLOYMENT_DONE(data, ws.close);
+            handlerFn.DEPLOYMENT_DONE(data, () => ws.close());
           break;
         case DeploymentEventType.DEPLOYMENT_HEALTHCHECK:
           handlerFn.DEPLOYMENT_HEALTHCHECK &&
-            handlerFn.DEPLOYMENT_HEALTHCHECK(data, ws.close);
+            handlerFn.DEPLOYMENT_HEALTHCHECK(data, () => ws.close());
           break;
         case DeploymentEventType.DEPLOYMENT_SETUP:
           handlerFn.DEPLOYMENT_SETUP &&
-            handlerFn.DEPLOYMENT_SETUP(data, ws.close);
+            handlerFn.DEPLOYMENT_SETUP(data, () => ws.close());
           break;
         case DeploymentEventType.DEPLOYMENT_PULL_IMAGE:
           handlerFn.DEPLOYMENT_PULL_IMAGE &&
-            handlerFn.DEPLOYMENT_PULL_IMAGE(data, ws.close);
+            handlerFn.DEPLOYMENT_PULL_IMAGE(data, () => ws.close());
           break;
         case DeploymentEventType.DEPLOYMENT_ERROR:
           handlerFn.DEPLOYMENT_ERROR &&
-            handlerFn.DEPLOYMENT_ERROR(data, ws.close);
+            handlerFn.DEPLOYMENT_ERROR(data, () => ws.close());
           break;
       }
     };
