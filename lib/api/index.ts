@@ -1,5 +1,4 @@
 import axios, { AxiosInstance } from "axios";
-import { EDEADLK } from "constants";
 
 import { KraneApiException } from "./exceptions";
 import {
