@@ -183,39 +183,38 @@ export class KraneClient {
     );
 
     ws.onmessage = (event: MessageEvent) => {
-      const { type } = JSON.parse(event.data) as DeploymentEvent;
-      switch (type) {
+      const data = JSON.parse(event.data) as DeploymentEvent;
+      switch (data.type) {
         case DeploymentEventType.DEPLOYMENT_CONTAINER_CREATE:
           eventHandlers.DEPLOYMENT_CONTAINER_CREATE &&
-            eventHandlers.DEPLOYMENT_CONTAINER_CREATE(event.data);
+            eventHandlers.DEPLOYMENT_CONTAINER_CREATE(data);
           break;
         case DeploymentEventType.DEPLOYMENT_CONTAINER_START:
           eventHandlers.DEPLOYMENT_CONTAINER_START &&
-            eventHandlers.DEPLOYMENT_CONTAINER_START(event.data);
+            eventHandlers.DEPLOYMENT_CONTAINER_START(data);
           break;
         case DeploymentEventType.DEPLOYMENT_CLEANUP:
           eventHandlers.DEPLOYMENT_CLEANUP &&
-            eventHandlers.DEPLOYMENT_CLEANUP(event.data);
+            eventHandlers.DEPLOYMENT_CLEANUP(data);
           break;
         case DeploymentEventType.DEPLOYMENT_DONE:
-          eventHandlers.DEPLOYMENT_DONE &&
-            eventHandlers.DEPLOYMENT_DONE(event.data);
+          eventHandlers.DEPLOYMENT_DONE && eventHandlers.DEPLOYMENT_DONE(data);
           break;
         case DeploymentEventType.DEPLOYMENT_HEALTHCHECK:
           eventHandlers.DEPLOYMENT_HEALTHCHECK &&
-            eventHandlers.DEPLOYMENT_HEALTHCHECK(event.data);
+            eventHandlers.DEPLOYMENT_HEALTHCHECK(data);
           break;
         case DeploymentEventType.DEPLOYMENT_SETUP:
           eventHandlers.DEPLOYMENT_SETUP &&
-            eventHandlers.DEPLOYMENT_SETUP(event.data);
+            eventHandlers.DEPLOYMENT_SETUP(data);
           break;
         case DeploymentEventType.DEPLOYMENT_PULL_IMAGE:
           eventHandlers.DEPLOYMENT_PULL_IMAGE &&
-            eventHandlers.DEPLOYMENT_PULL_IMAGE(event.data);
+            eventHandlers.DEPLOYMENT_PULL_IMAGE(data);
           break;
         case DeploymentEventType.DEPLOYMENT_ERROR:
           eventHandlers.DEPLOYMENT_ERROR &&
-            eventHandlers.DEPLOYMENT_ERROR(event.data);
+            eventHandlers.DEPLOYMENT_ERROR(data);
           break;
       }
     };
