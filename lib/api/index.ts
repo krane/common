@@ -182,8 +182,9 @@ export class KraneClient {
       }
     );
 
-    ws.onmessage = (event: MessageEvent<DeploymentEvent>) => {
-      switch (event.data.type) {
+    ws.onmessage = (event: MessageEvent) => {
+      const { type } = JSON.parse(event.data) as DeploymentEvent;
+      switch (type) {
         case DeploymentEventType.DEPLOYMENT_CONTAINER_CREATE:
           eventHandlers.DEPLOYMENT_CONTAINER_CREATE &&
             eventHandlers.DEPLOYMENT_CONTAINER_CREATE(event.data);
