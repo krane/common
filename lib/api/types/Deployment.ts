@@ -23,15 +23,3 @@ export type DeploymentEvent = {
   type: DeploymentEventType;
   message: string;
 };
-
-export interface DeploymentEventHandlers {
-  onContainerCreate: (event: DeploymentEvent) => void;
-  onContainerStart: (event: DeploymentEvent) => void;
-  onCleanup: (event: DeploymentEvent) => void;
-  onDone: (event: DeploymentEvent) => void;
-  onHealtcheck: (event: DeploymentEvent) => void;
-  onSetup: (event: DeploymentEvent) => void;
-  onPullImage: (event: DeploymentEvent) => void;
-  onError: (event: DeploymentEvent) => void;
-  close: () => void;
-}
