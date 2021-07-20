@@ -1,16 +1,15 @@
 import axios, { AxiosInstance } from "axios";
-
 import { KraneApiException } from "./exceptions";
 import {
   Config,
   Container,
   Deployment,
-  LoginResponse,
-  Session,
-  Secret,
-  Job,
   DeploymentEvent,
   DeploymentEventType,
+  Job,
+  LoginResponse,
+  Secret,
+  Session,
 } from "./types";
 
 const WebSocket = require("ws");
@@ -194,13 +193,13 @@ export class KraneClient {
     ws.onmessage = (event: MessageEvent) => {
       const data = JSON.parse(event.data) as DeploymentEvent;
       switch (data.type) {
-        case DeploymentEventType.DEPLOYMENT_CONTAINER_CREATE:
-          eventHandler.DEPLOYMENT_CONTAINER_CREATE &&
-            eventHandler.DEPLOYMENT_CONTAINER_CREATE(data, () => ws.close());
+        case DeploymentEventType.CONTAINER_CREATE:
+          eventHandler.CONTAINER_CREATE &&
+            eventHandler.CONTAINER_CREATE(data, () => ws.close());
           break;
-        case DeploymentEventType.DEPLOYMENT_CONTAINER_START:
-          eventHandler.DEPLOYMENT_CONTAINER_START &&
-            eventHandler.DEPLOYMENT_CONTAINER_START(data, () => ws.close());
+        case DeploymentEventType.CONTAINER_START:
+          eventHandler.CONTAINER_START &&
+            eventHandler.CONTAINER_START(data, () => ws.close());
           break;
         case DeploymentEventType.DEPLOYMENT_CLEANUP:
           eventHandler.DEPLOYMENT_CLEANUP &&
@@ -218,9 +217,9 @@ export class KraneClient {
           eventHandler.DEPLOYMENT_SETUP &&
             eventHandler.DEPLOYMENT_SETUP(data, () => ws.close());
           break;
-        case DeploymentEventType.DEPLOYMENT_PULL_IMAGE:
-          eventHandler.DEPLOYMENT_PULL_IMAGE &&
-            eventHandler.DEPLOYMENT_PULL_IMAGE(data, () => ws.close());
+        case DeploymentEventType.PULL_IMAGE:
+          eventHandler.PULL_IMAGE &&
+            eventHandler.PULL_IMAGE(data, () => ws.close());
           break;
         case DeploymentEventType.DEPLOYMENT_ERROR:
           eventHandler.DEPLOYMENT_ERROR &&
