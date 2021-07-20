@@ -200,6 +200,9 @@ export class KraneClient {
         case DeploymentEventType.CONTAINER_START:
           eventHandler.CONTAINER_START &&
             eventHandler.CONTAINER_START(data, () => ws.close());
+        case DeploymentEventType.CONTAINER_REMOVE:
+          eventHandler.CONTAINER_REMOVE &&
+            eventHandler.CONTAINER_REMOVE(data, () => ws.close());
           break;
         case DeploymentEventType.DEPLOYMENT_CLEANUP:
           eventHandler.DEPLOYMENT_CLEANUP &&
