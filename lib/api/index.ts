@@ -9,7 +9,7 @@ import {
   Job,
   LoginResponse,
   Secret,
-  Session,
+  Session
 } from "./types";
 
 const WebSocket = require("ws");

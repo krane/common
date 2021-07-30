@@ -1,6 +1,12 @@
+export type Registry = {
+  url: string;
+  username?: string;
+  password?: string;
+};
+
 export type Config = {
   name: string;
-  registry?: string;
+  registry?: Registry;
   image: string;
   tag: string;
   alias?: string[];
