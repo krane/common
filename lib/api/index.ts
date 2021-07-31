@@ -175,6 +175,7 @@ export class KraneClient {
         stopListening: () => void
       ) => void;
     },
+    onConnected?: (event: Event) => void,
     onError?: (event: Event) => void
   ) {
     const wsEndpoint = this.endpoint.replace(/(http)(s)?\:\/\//, "ws$2://");
@@ -184,6 +185,10 @@ export class KraneClient {
         headers: { Authorization: `Bearer ${this.token}` },
       }
     );
+
+    ws.onopen = (event: Event) => {
+      onConnected && onConnected(event);
+    };
 
     ws.onerror = (event: Event) => {
       onError && onError(event);
