@@ -9,7 +9,7 @@ import {
   Job,
   LoginResponse,
   Secret,
-  Session
+  Session,
 } from "./types";
 
 const WebSocket = require("ws");
@@ -192,41 +192,44 @@ export class KraneClient {
 
     ws.onmessage = (event: MessageEvent) => {
       const data = JSON.parse(event.data) as DeploymentEvent;
+      const close = () => ws.close();
       switch (data.type) {
         case DeploymentEventType.CONTAINER_CREATE:
           eventHandler.CONTAINER_CREATE &&
-            eventHandler.CONTAINER_CREATE(data, () => ws.close());
+            eventHandler.CONTAINER_CREATE(data, close);
           break;
         case DeploymentEventType.CONTAINER_START:
           eventHandler.CONTAINER_START &&
-            eventHandler.CONTAINER_START(data, () => ws.close());
+            eventHandler.CONTAINER_START(data, close);
+        case DeploymentEventType.CONTAINER_STOP:
+          eventHandler.CONTAINER_STOP &&
+            eventHandler.CONTAINER_STOP(data, close);
         case DeploymentEventType.CONTAINER_REMOVE:
           eventHandler.CONTAINER_REMOVE &&
-            eventHandler.CONTAINER_REMOVE(data, () => ws.close());
+            eventHandler.CONTAINER_REMOVE(data, close);
           break;
         case DeploymentEventType.DEPLOYMENT_CLEANUP:
           eventHandler.DEPLOYMENT_CLEANUP &&
-            eventHandler.DEPLOYMENT_CLEANUP(data, () => ws.close());
+            eventHandler.DEPLOYMENT_CLEANUP(data, close);
           break;
         case DeploymentEventType.DEPLOYMENT_DONE:
           eventHandler.DEPLOYMENT_DONE &&
-            eventHandler.DEPLOYMENT_DONE(data, () => ws.close());
+            eventHandler.DEPLOYMENT_DONE(data, close);
           break;
         case DeploymentEventType.DEPLOYMENT_HEALTHCHECK:
           eventHandler.DEPLOYMENT_HEALTHCHECK &&
-            eventHandler.DEPLOYMENT_HEALTHCHECK(data, () => ws.close());
+            eventHandler.DEPLOYMENT_HEALTHCHECK(data, close);
           break;
         case DeploymentEventType.DEPLOYMENT_SETUP:
           eventHandler.DEPLOYMENT_SETUP &&
-            eventHandler.DEPLOYMENT_SETUP(data, () => ws.close());
+            eventHandler.DEPLOYMENT_SETUP(data, close);
           break;
         case DeploymentEventType.PULL_IMAGE:
-          eventHandler.PULL_IMAGE &&
-            eventHandler.PULL_IMAGE(data, () => ws.close());
+          eventHandler.PULL_IMAGE && eventHandler.PULL_IMAGE(data, close);
           break;
         case DeploymentEventType.DEPLOYMENT_ERROR:
           eventHandler.DEPLOYMENT_ERROR &&
-            eventHandler.DEPLOYMENT_ERROR(data, () => ws.close());
+            eventHandler.DEPLOYMENT_ERROR(data, close);
           break;
       }
     };
