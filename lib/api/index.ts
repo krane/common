@@ -167,17 +167,22 @@ export class KraneClient {
     return data;
   }
 
-  subscribeToDeploymentEvents(
-    deployment: string,
-    eventHandler: {
+  subscribeToDeploymentEvents({
+    deployment,
+    eventHandlers,
+    onListening,
+    onError,
+  }: {
+    deployment: string;
+    eventHandlers: {
       [key in DeploymentEventType]?: (
         event: DeploymentEvent,
         stopListening: () => void
       ) => void;
-    },
-    onConnected?: (event: Event) => void,
-    onError?: (event: Event) => void
-  ) {
+    };
+    onListening?: (event: Event) => void;
+    onError?: (event: Event) => void;
+  }) {
     const wsEndpoint = this.endpoint.replace(/(http)(s)?\:\/\//, "ws$2://");
     const ws: WebSocket = new WebSocket(
       `${wsEndpoint}/ws/deployments/${deployment}/events`,
@@ -187,54 +192,52 @@ export class KraneClient {
     );
 
     ws.onopen = (event: Event) => {
-      onConnected && onConnected(event);
+      if (onListening) onListening(event);
     };
-
     ws.onerror = (event: Event) => {
-      onError && onError(event);
+      if (onError) onError(event);
       ws.close();
     };
-
     ws.onmessage = (event: MessageEvent) => {
       const data = JSON.parse(event.data) as DeploymentEvent;
       const close = () => ws.close();
       switch (data.type) {
         case DeploymentEventType.CONTAINER_CREATE:
-          eventHandler.CONTAINER_CREATE &&
-            eventHandler.CONTAINER_CREATE(data, close);
+          eventHandlers.CONTAINER_CREATE &&
+            eventHandlers.CONTAINER_CREATE(data, close);
           break;
         case DeploymentEventType.CONTAINER_START:
-          eventHandler.CONTAINER_START &&
-            eventHandler.CONTAINER_START(data, close);
+          eventHandlers.CONTAINER_START &&
+            eventHandlers.CONTAINER_START(data, close);
         case DeploymentEventType.CONTAINER_STOP:
-          eventHandler.CONTAINER_STOP &&
-            eventHandler.CONTAINER_STOP(data, close);
+          eventHandlers.CONTAINER_STOP &&
+            eventHandlers.CONTAINER_STOP(data, close);
         case DeploymentEventType.CONTAINER_REMOVE:
-          eventHandler.CONTAINER_REMOVE &&
-            eventHandler.CONTAINER_REMOVE(data, close);
+          eventHandlers.CONTAINER_REMOVE &&
+            eventHandlers.CONTAINER_REMOVE(data, close);
           break;
         case DeploymentEventType.DEPLOYMENT_CLEANUP:
-          eventHandler.DEPLOYMENT_CLEANUP &&
-            eventHandler.DEPLOYMENT_CLEANUP(data, close);
+          eventHandlers.DEPLOYMENT_CLEANUP &&
+            eventHandlers.DEPLOYMENT_CLEANUP(data, close);
           break;
         case DeploymentEventType.DEPLOYMENT_DONE:
-          eventHandler.DEPLOYMENT_DONE &&
-            eventHandler.DEPLOYMENT_DONE(data, close);
+          eventHandlers.DEPLOYMENT_DONE &&
+            eventHandlers.DEPLOYMENT_DONE(data, close);
           break;
         case DeploymentEventType.DEPLOYMENT_HEALTHCHECK:
-          eventHandler.DEPLOYMENT_HEALTHCHECK &&
-            eventHandler.DEPLOYMENT_HEALTHCHECK(data, close);
+          eventHandlers.DEPLOYMENT_HEALTHCHECK &&
+            eventHandlers.DEPLOYMENT_HEALTHCHECK(data, close);
           break;
         case DeploymentEventType.DEPLOYMENT_SETUP:
-          eventHandler.DEPLOYMENT_SETUP &&
-            eventHandler.DEPLOYMENT_SETUP(data, close);
+          eventHandlers.DEPLOYMENT_SETUP &&
+            eventHandlers.DEPLOYMENT_SETUP(data, close);
           break;
         case DeploymentEventType.PULL_IMAGE:
-          eventHandler.PULL_IMAGE && eventHandler.PULL_IMAGE(data, close);
+          eventHandlers.PULL_IMAGE && eventHandlers.PULL_IMAGE(data, close);
           break;
         case DeploymentEventType.DEPLOYMENT_ERROR:
-          eventHandler.DEPLOYMENT_ERROR &&
-            eventHandler.DEPLOYMENT_ERROR(data, close);
+          eventHandlers.DEPLOYMENT_ERROR &&
+            eventHandlers.DEPLOYMENT_ERROR(data, close);
           break;
       }
     };
