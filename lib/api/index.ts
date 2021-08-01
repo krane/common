@@ -180,7 +180,7 @@ export class KraneClient {
         stopListening: () => void
       ) => void;
     };
-    onListening?: (event: Event) => void;
+    onListening?: () => void;
     onError?: (event: Event) => void;
   }) {
     const wsEndpoint = this.endpoint.replace(/(http)(s)?\:\/\//, "ws$2://");
@@ -191,8 +191,8 @@ export class KraneClient {
       }
     );
 
-    ws.onopen = (event: Event) => {
-      if (onListening) onListening(event);
+    ws.onopen = (_event: Event) => {
+      if (onListening) onListening();
     };
     ws.onerror = (event: Event) => {
       if (onError) onError(event);
