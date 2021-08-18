@@ -42,9 +42,13 @@ export class KraneClient {
     return data;
   }
 
-  async ping(): Promise<boolean> {
+  async ping(url?: string): Promise<boolean> {
+    let client = this.client;
+    if (url) {
+      client = axios.create({ baseURL: url });
+    }
     try {
-      const { status } = await this.client.get("/");
+      const { status } = await client.get("/");
       return status === 200;
     } catch {
       // Note: we swallow the error so as to not force the
