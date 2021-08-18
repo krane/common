@@ -1,8 +1,8 @@
-![Common](https://res.cloudinary.com/biensupernice/image/upload/v1602471786/Marketing_-_Krane_Common_m2jrvu.png)
+<img src="https://github.com/krane/krane/blob/main/docs/assets/krane-wordmark.png?raw=true" width="350">
+
+> Common modules written in Typescript to interface with [Krane](https://github.com/krane/krane)
 
 [![npm version](https://badge.fury.io/js/%40krane%2Fcommon.svg)](https://badge.fury.io/js/%40krane%2Fcommon)
-
-A common set of utilities written in Typescript to interface with [Krane](https://krane.sh)
 
 ## Install
 
@@ -15,8 +15,8 @@ npm i @krane/common
 ```typescript
 import { KraneClient } from "@krane/common";
 
-// Create an authenticated client to interface with the Krane API
-const client = new KraneClient("http://example.com", "Bearer ...");
+// Create an authenticated client to interface with a Krane instance
+const client = new KraneClient("https://krane.example.com", "Bearer ...");
 
 // Get all deployments
 const deployments = client.getDeployments();
