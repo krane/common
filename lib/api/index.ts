@@ -7,6 +7,7 @@ import {
   DeploymentEvent,
   DeploymentEventType,
   Job,
+  KraneHealth,
   LoginResponse,
   Secret,
   Session,
@@ -41,6 +42,20 @@ export class KraneClient {
     return data;
   }
 
+  async ping(): Promise<boolean> {
+    const { status } = await this.client.get("/");
+    return status === 200;
+  }
+
+  async health(): Promise<KraneHealth> {
+    const path = "/health";
+    const { data, status } = await this.client.get<KraneHealth>(path);
+    if (status != 200) {
+      throw new Error("Krane instance in a bad state");
+    }
+    return data;
+  }
+
   async getSessions() {
     const path = "/sessions";
     const { data } = await this.client.get<Session[]>(path);
@@ -56,7 +71,6 @@ export class KraneClient {
   async deleteSession(sessionId: string) {
     const path = `/sessions/${sessionId}`;
     const { status } = await this.client.delete(path);
-
     if (status != 200) {
       throw new KraneApiException("Unable to delete session");
     }
@@ -77,7 +91,6 @@ export class KraneClient {
   async saveDeployment(config: Config) {
     const path = "/deployments";
     const { status } = await this.client.post<Config>(path, config);
-
     if (status != 200) {
       throw new KraneApiException("Unable to save deployment");
     }
@@ -86,7 +99,6 @@ export class KraneClient {
   async deleteDeployment(deployment: string) {
     const path = `/deployments/${deployment}`;
     const { status } = await this.client.delete(path);
-
     if (status != 202) {
       throw new KraneApiException("Unable to delete deployment");
     }
@@ -95,7 +107,6 @@ export class KraneClient {
   async runDeployment(deployment: string) {
     const path = `/deployments/${deployment}`;
     const { status } = await this.client.post(path);
-
     if (status != 202) {
       throw new KraneApiException("Unable to run deployment");
     }
@@ -104,7 +115,6 @@ export class KraneClient {
   async startDeployment(deployment: string) {
     const path = `/deployments/${deployment}/containers/start`;
     const { status } = await this.client.post(path);
-
     if (status != 202) {
       throw new KraneApiException("Unable to start deployment");
     }
@@ -113,7 +123,6 @@ export class KraneClient {
   async stopDeployment(deployment: string) {
     const path = `/deployments/${deployment}/containers/stop`;
     const { status } = await this.client.post(path);
-
     if (status != 202) {
       throw new KraneApiException("Unable to stop deployment");
     }
@@ -122,7 +131,6 @@ export class KraneClient {
   async restartDeployment(deployment: string) {
     const path = `/deployments/${deployment}/containers/restart`;
     const { status } = await this.client.post(path);
-
     if (status != 202) {
       throw new KraneApiException("Unable to restart deployment");
     }
@@ -149,7 +157,6 @@ export class KraneClient {
   async deleteSecret(deployment: string, key: string) {
     const path = `/secrets/${deployment}/${key}`;
     const { status } = await this.client.delete(path);
-
     if (status != 200) {
       throw new KraneApiException("Unable to delete secret");
     }
