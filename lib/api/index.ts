@@ -43,8 +43,15 @@ export class KraneClient {
   }
 
   async ping(): Promise<boolean> {
-    const { status } = await this.client.get("/");
-    return status === 200;
+    try {
+      const { status } = await this.client.get("/");
+      return status === 200;
+    } catch {
+      // Note: we swallow the error so as to not force the
+      // client to catch errors and just rely on a 'falsy'
+      // response as the signal for network/host errors.
+      return false;
+    }
   }
 
   async health(): Promise<KraneHealth> {
